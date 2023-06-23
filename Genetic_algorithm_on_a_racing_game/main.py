@@ -3,7 +3,7 @@ import pygame.key
 from game import *
 from pygame.locals import *
 
-Map = Map()
+game_map = Map()
 car = Car()
 
 # Main loop
@@ -23,16 +23,33 @@ while running:
                 car.steer_left()
             if event.key == pygame.K_RIGHT:
                 car.steer_right()
+            if event.key == pygame.K_ESCAPE:
+                running = False
 
     car.move()
+
+    # Check collision
+    car.Collision(game_map)
+
     # Efface l'écran
-    Map.window.fill((255, 255, 255))
+    game_map.window.fill((255, 255, 255))
 
     # Affiche la carte
-    Map.display_map()
+    game_map.display_map()
 
     # Affiche la voiture
-    pygame.draw.rect(Map.window, (0, 0, 255), (car.x, car.y, 20, 20))
+    car.Draw(game_map)
+
+
+    #radar
+    car.radar(game_map)
+
+    print("left_distance: " + str(car.left_distance))
+    print("right_distance: " + str(car.right_distance))
+    print("front_left_distance: " + str(car.front_left_distance))
+    print("front_right_distance: " + str(car.front_right_distance))
+    print("front_distance: " + str(car.front_distance))
+
 
     # Rafraîchit l'affichage
     pygame.display.flip()
