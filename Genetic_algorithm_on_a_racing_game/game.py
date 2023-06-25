@@ -1,20 +1,21 @@
 import pygame
 import math
+import time
 
 # Class representing the game map
 class Map:
     def __init__(self):
         self.ascii_map = [
             "VVVVVVVVVVVVVV",
-            "VSRVVVVVVVVVVV",
-            "VRRVVVVVVVVVVV",
-            "VVRRVVVVVVVVVV",
+            "VSRRVVVVVVVVVV",
             "VVVRRVVVVVVVVV",
-            "VVVVRRRRRVVVVV",
-            "VVVVVVVVRRVVVV",
-            "VVVVVVVVVRRVVV",
-            "VVVVVVVVVVRRVV",
-            "VVVVVVVVVVVRFV",
+            "VVVVRRRRVVVVVV",
+            "VVVVVVVRVVVVVV",
+            "VVVVVVVRVVVVVV",
+            "VVVVVVVRVVVVVV",
+            "VVVVVVVRRVVVVV",
+            "VVVVVVVVRRRVVV",
+            "VVVVVVVVVVRRFV",
             "VVVVVVVVVVVVVV"
         ]
         self.cell_size = 50
@@ -66,6 +67,7 @@ class Car:
         self.nb_laps = 0
         self.distance = 0
         self.avg_speed = 0
+        self.start_time = time.time()
 
     # Draw the car on the game map
     def Draw(self, game_map):
@@ -134,11 +136,12 @@ class Car:
     # Calculate the reward for the car based on its performance
     def calculate_reward(self, game_map):
         reward = 0
-        reward += self.nb_deaths * -1000
-        reward += self.nb_laps * 1000
-        reward += self.avg_speed * 1000
+        reward += self.nb_laps * 10000
+        if self.nb_laps >= 1:
+            reward += self.avg_speed
+
         reward += self.distance
-        reward /= 10000
+        reward /= 1000
 
         return reward
 

@@ -3,6 +3,7 @@ import pygame
 import os
 import neat
 import time
+from game import Car, Map
 
 # Global variable to keep track of the generation
 generation = 0
